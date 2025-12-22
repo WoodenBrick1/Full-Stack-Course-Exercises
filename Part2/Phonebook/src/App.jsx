@@ -1,19 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import personsService from "./services/persons"
 import Search from "./components/Search"
 import PersonForm from "./components/PersonForm"
 import Numbers from "./components/Numbers"
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ])
-
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+
+  useEffect(() => {
+    personsService.getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+      })
+  }, [])
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -27,23 +29,44 @@ const App = () => {
     setFilter(event.target.value);
   }
 
-  const addName = (event) => {
-    event.preventDefault();
-
-    if (persons.find(person => person.name == newName)) {
-      alert(`${newName} has already been entered`)
-      return;
+  const handleDelete = person => {
+    if (!window.confirm(`Do you want to delete ${person.name}?`)) {
+      return
     }
 
-    const newPersons = persons.concat({
+    personsService.deletePerson(person.id)
+      .then(deletedPerson => {
+        setPersons(persons.filter(person => person.id !== deletedPerson.id))
+      })
+  }
+
+  const addName = (event) => {
+    event.preventDefault();
+    const newPerson = {
       name: newName,
       number: newNumber,
       id: persons.length + 1
-    })
+    }
 
-    setPersons(newPersons)
-    setNewName('');
-    setNewNumber('');
+    const existingPerson = persons.find(person => person.name == newName)
+    if (existingPerson) {
+      if (window.confirm(`${newName} has already been added to the notebook, replace the old number with the new one?`)) {
+        personsService.update(existingPerson.id, newPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id === returnedPerson.id ? returnedPerson : person))
+          })
+      }
+      return
+    }
+
+    personsService.create(newPerson)
+      .then(returnedPersons => {
+        setPersons(persons.concat(returnedPersons))
+        setNewName('')
+        setNewNumber('')
+      })
+
+
   }
 
   const getFilteredPersons = () => {
@@ -58,7 +81,7 @@ const App = () => {
       <PersonForm onSubmit={addName} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}
         newName={newName} newNumber={newNumber} />
       <h2>Numbers</h2>
-      <Numbers persons={getFilteredPersons()} />
+      <Numbers persons={getFilteredPersons()} handleOnClick={handleDelete} />
     </div>
   )
 }
