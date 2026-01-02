@@ -1,1 +1,1 @@
-Backend: https://phonebook-app-pzrg.onrender.com/api/persons
+https://phonebook-app-pzrg.onrender.com
