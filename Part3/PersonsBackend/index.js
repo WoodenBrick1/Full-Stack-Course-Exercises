@@ -1,11 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const Contact = require("./models/contact");
 const app = express();
 
 app.use(express.json());
 app.use(express.static("dist"));
+app.use(cors({ origin: "http://localhost:5173" }));
 
 morgan.token("post", (req, res) => {
   return JSON.stringify(req.body);
@@ -90,6 +92,25 @@ app.post("/api/persons", (request, response) => {
   person.save().then((savedPerson) => {
     response.json(savedPerson);
   });
+});
+
+app.put("/api/persons/:id", (request, response, next) => {
+  const { name, number } = request.body;
+
+  Contact.findById(request.params.id)
+    .then((person) => {
+      if (!person) {
+        return response.status(404).end();
+      }
+
+      person.name = name;
+      person.number = number;
+
+      return person.save().then((updatedPerson) => {
+        response.json(updatedPerson);
+      });
+    })
+    .catch((error) => next(error));
 });
 
 app.delete("/api/persons/:id", (request, response, next) => {
