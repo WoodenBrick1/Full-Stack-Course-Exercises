@@ -2,7 +2,8 @@ POST http://localhost:3001/api/persons/
 Content-Type: application/json
 
 {
-    "number": "3413-1341-341"
+    "name": "Wooden Brick2",
+    "number": "3-1332341"
 }
 
 // https://phonebook-app-pzrg.onrender.com/api/persons
