@@ -46,11 +46,14 @@ app.get("/", (request, response) => {
 
 app.get("/info", (request, response) => {
   const time = Date();
-  response.send(`
-        <div>
-            <p>Phonebook has info for ${people.length} people</p>
-            <p>${time}</p>
-        </div>`);
+
+  Contact.collection.countDocuments().then((number) => {
+    response.send(`
+          <div>
+              <p>Phonebook has info for ${number} people</p>
+              <p>${time}</p>
+          </div>`);
+  });
 });
 
 app.get("/api/persons", (request, response) => {
