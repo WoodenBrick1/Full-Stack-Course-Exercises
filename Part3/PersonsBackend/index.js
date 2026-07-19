@@ -1,13 +1,11 @@
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
-const cors = require('cors')
 const Contact = require('./models/contact')
 const app = express()
 
 app.use(express.json())
 app.use(express.static('dist'))
-app.use(cors({ origin: 'http://localhost:5173' }))
 
 morgan.token('post', (req) => {
   return JSON.stringify(req.body)
