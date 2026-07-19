@@ -1,0 +1,27 @@
+{
+  "name": "Template",
+  "version": "1.0.0",
+  "description": "Template for Backend Projects",
+  "license": "ISC",
+  "author": "Brick",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "build:ui": "rm -rf dist && cd ../{path to frontend}/ && npm run build && cp -r dist ../{path to backend}",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
+    "start": "node index.js",
+    "lint": "eslint .",
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "eslint": "^10.7.0",
+    "globals": "^17.7.0"
+  }
+}
