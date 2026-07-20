@@ -12,7 +12,7 @@
     "start": "node index.js",
     "lint": "eslint .",
     "dev": "node --watch index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
