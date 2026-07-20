@@ -3,18 +3,19 @@ const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
 
 
-describe('mostBlogs with 0 blogs', () => {
+describe('mostLikes with 0 blogs', () => {
     const listWithZeroBlogs = [
     ]
 
     test('when list has 0 blogs, it should return null', () => {
-        const result = listHelper.mostBlogs(listWithZeroBlogs)
+        const result = listHelper.mostLikes(listWithZeroBlogs)
         assert.strictEqual(result, null)
     })
 
 })
 
-describe('mostBlogs with 1 blog', () => {
+
+describe('mostLikes with 1 blog', () => {
     const listWithOneBlog = [
         {
             _id: '5a422aa71b54a676234d17f8',
@@ -27,17 +28,18 @@ describe('mostBlogs with 1 blog', () => {
         }
     ]
 
-    test('when list has 1 blogs, it should return the author and blogs: 1', () => {
-        const result = listHelper.mostBlogs(listWithOneBlog)
+    test('when list has 1 blogs, it should return the author and it\'s likes', () => {
+        const result = listHelper.mostLikes(listWithOneBlog)
         assert.deepStrictEqual(result, {
             author: 'Edsger W. Dijkstra',
-            blogs: 1
+            likes: 5
         })
     })
 
 })
 
-describe('mostBlogs with 2 blogs with the same author', () => {
+
+describe('mostLikes with 2 blogs with the same author', () => {
     const listWithTwoBlogs = [
         {
             _id: '5a422aa71b54a676234d17f8',
@@ -59,17 +61,17 @@ describe('mostBlogs with 2 blogs with the same author', () => {
         }
     ]
 
-    test('when list has 2 blogs with the same author, it should return the author and blogs: 2', () => {
-        const result = listHelper.mostBlogs(listWithTwoBlogs)
+    test('when list has 2 blogs with the same author, it should return the author the sum of the blogs', () => {
+        const result = listHelper.mostLikes(listWithTwoBlogs)
         assert.deepStrictEqual(result, {
             author: 'Edsger W. Dijkstra',
-            blogs: 2
+            likes: 14
         })
     })
 
 })
 
-describe('mostBlogs with 2 blogs with the different author', () => {
+describe('mostLikes with 2 blogs with the different author', () => {
     const listWithTwoBlogs = [
         {
             _id: '5a422aa71b54a676234d17f8',
@@ -90,17 +92,48 @@ describe('mostBlogs with 2 blogs with the different author', () => {
         },
     ]
 
-    test('when list has 2 blogs with different authors, it should return the first author and blogs: 1', () => {
-        const result = listHelper.mostBlogs(listWithTwoBlogs)
+    test('when list has 2 blogs with different authors, it should return the first author who has the most likes', () => {
+        const result = listHelper.mostLikes(listWithTwoBlogs)
         assert.deepStrictEqual(result, {
-            author: 'Edsger W. Dijkstra',
-            blogs: 1
+            author: 'Michael Chan',
+            likes: 7
         })
     })
 
 })
 
-describe('mostBlogs with multiple blogs', () => {
+describe('mostLikes with 2 blogs with the different author and same likes', () => {
+    const listWithTwoBlogs = [
+        {
+            _id: '5a422aa71b54a676234d17f8',
+            title: 'Go To Statement Considered Harmful',
+            author: 'Edsger W. Dijkstra',
+            url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+            likes: 5,
+            __v: 0
+
+        },
+        {
+            _id: "5a422a851b54a676234d17f7",
+            title: "React patterns",
+            author: "Michael Chan",
+            url: "https://reactpatterns.com/",
+            likes: 5,
+            __v: 0
+        },
+    ]
+
+    test('when list has 2 blogs with different authors and same likes, it should return the last author', () => {
+        const result = listHelper.mostLikes(listWithTwoBlogs)
+        assert.deepStrictEqual(result, {
+            author: 'Michael Chan',
+            likes: 5
+        })
+    })
+
+})
+
+describe('mostLikes with multiple blogs', () => {
     const listWithTwoBlog = [
         {
             _id: "5a422a851b54a676234d17f7",
@@ -152,11 +185,11 @@ describe('mostBlogs with multiple blogs', () => {
         }
     ]
 
-    test('when list has multiple blogs with different authors, it should return the author with the most blogs', () => {
-        const result = listHelper.mostBlogs(listWithTwoBlog)
+    test('when list has multiple blogs with different authors, it should return the author with the most likes', () => {
+        const result = listHelper.mostLikes(listWithTwoBlog)
         assert.deepStrictEqual(result, {
-            author: 'Robert C. Martin',
-            blogs: 3
+            author: 'Edsger W. Dijkstra',
+            likes: 17
         })
     })
 

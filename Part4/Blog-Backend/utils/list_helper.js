@@ -59,9 +59,37 @@ const mostBlogs = (blogs) => {
     return mostBlogsObject
 }
 
+const mostLikes = (blogs) => {
+
+    if (blogs.length === 0) {
+        return null
+    }
+
+    const mostLikesObject = {
+        author: '',
+        likes: 0
+    }
+
+    const authors = lodash.groupBy(blogs, 'author')
+
+
+    for (let author in authors) {
+        const numOfLikes = authors[author].reduce((total, data) => data.likes + total, 0)
+
+        if (numOfLikes >= mostLikesObject.likes) {
+            mostLikesObject.author = author
+            mostLikesObject.likes = numOfLikes
+        }
+
+    }
+
+    return mostLikesObject
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favouriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
