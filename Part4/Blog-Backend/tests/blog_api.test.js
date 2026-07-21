@@ -19,9 +19,31 @@ test('all blogs are returned', async () => {
     assert.strictEqual(response.body.length, helper.initialBlogs.length)
 })
 
-test.only('The Unique identifier is called: id', async () => {
+test('The Unique identifier is called: id', async () => {
     const blogs = await helper.blogsInDb()
     assert(blogs[0].hasOwnProperty('id'))
+})
+
+test('a blog can be inserted', async () => {
+    const blog = {
+        title: "Hi",
+        author: "Brick",
+        url: "fakeurl.com",
+        likes: 8
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(blog)
+        .expect(201)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+
+    const titles = blogsAtEnd.map(blog => blog.title)
+    assert(titles.includes(blog.title))
+
 })
 
 after(async () => {
