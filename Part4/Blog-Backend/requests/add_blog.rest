@@ -2,7 +2,7 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Hello2!",
+    "title": "Hello!",
     "author": "Brick",
     "url": "fakeurl.com",
     "likes": 4
