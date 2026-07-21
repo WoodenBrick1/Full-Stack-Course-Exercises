@@ -13,10 +13,15 @@ beforeEach(async () => {
     await Blog.insertMany(helper.initialBlogs)
 })
 
-test.only('all blogs are returned', async () => {
+test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs')
 
     assert.strictEqual(response.body.length, helper.initialBlogs.length)
+})
+
+test.only('The Unique identifier is called: id', async () => {
+    const blogs = await helper.blogsInDb()
+    assert(blogs[0].hasOwnProperty('id'))
 })
 
 after(async () => {
