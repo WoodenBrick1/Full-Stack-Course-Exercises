@@ -46,6 +46,25 @@ test('a blog can be inserted', async () => {
 
 })
 
+test.only('if a blog is inserted without likes property, the likes will default to 0', async () => {
+    const blog = {
+        title: "Hi",
+        author: "Brick",
+        url: "fakeurl.com",
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(blog)
+        .expect(201)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+
+    assert.strictEqual(blogsAtEnd.find((blogInArray) => blogInArray.title === blog.title).likes, 0)
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
