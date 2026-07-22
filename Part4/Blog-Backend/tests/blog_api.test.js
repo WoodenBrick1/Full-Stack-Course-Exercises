@@ -46,7 +46,7 @@ test('a blog can be inserted', async () => {
 
 })
 
-test.only('if a blog is inserted without likes property, the likes will default to 0', async () => {
+test('if a blog is inserted without likes property, the likes will default to 0', async () => {
     const blog = {
         title: "Hi",
         author: "Brick",
@@ -63,6 +63,36 @@ test.only('if a blog is inserted without likes property, the likes will default 
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
 
     assert.strictEqual(blogsAtEnd.find((blogInArray) => blogInArray.title === blog.title).likes, 0)
+})
+
+
+test('if a blog is inserted without title or url property, it should return a status of 400', async () => {
+    const blogWithoutTitle = {
+        author: "Brick",
+        url: "fakeurl.com",
+        likes: 12
+    }
+
+    const blogWithoutUrl = {
+        title: "Hi",
+        author: "Brick",
+        likes: 12
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(blogWithoutTitle)
+        .expect(400)
+
+    await api
+        .post('/api/blogs')
+        .send(blogWithoutUrl)
+        .expect(400)
+
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
 })
 
 after(async () => {
