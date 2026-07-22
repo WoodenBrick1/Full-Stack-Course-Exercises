@@ -107,14 +107,46 @@ describe('When there is blogs in the database', () => {
 
             const blogsAtStart = await helper.blogsInDb()
             const blogToDelete = blogsAtStart[0]
+            const id = blogToDelete.id
 
             await api
-                .delete(`/api/blogs/${blogToDelete.id}`)
+                .delete(`/api/blogs/${id}`)
                 .expect(204)
 
             const blogsAtEnd = await helper.blogsInDb()
-
+            console.log(blogsAtEnd)
+            console.log(id)
             assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1)
+
+            const ids = blogsAtEnd.map(blog => blog.id)
+            assert.strictEqual(ids.includes(id), false)
+
+        })
+    })
+
+    describe('PUT api calls', () => {
+
+        test('Return 200 if the id is valid', async () => {
+
+            const blogsAtStart = await helper.blogsInDb()
+            const blogToUpdate = blogsAtStart[0]
+            const id = blogToUpdate.id
+
+            const newLikes = 15
+            blogToUpdate.likes = newLikes
+
+            await api
+                .put(`/api/blogs/${id}`)
+                .send(blogToUpdate)
+                .expect(200)
+
+            const blogsAtEnd = await helper.blogsInDb()
+
+            assert.strictEqual(blogsAtStart.length, blogsAtEnd.length)
+
+            const newBlog = blogsAtEnd.find((blog) => blog.id = id)
+
+            assert.strictEqual(newBlog.likes, newLikes)
 
         })
     })
