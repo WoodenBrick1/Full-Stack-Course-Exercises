@@ -8,7 +8,13 @@ const userSchema = new mongoose.Schema({
         unique: true // this ensures the uniqueness of username
     },
     name: String,
-    passwordHash: String
+    passwordHash: String,
+    blogs: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Blog'
+        }
+    ]
 })
 
 userSchema.set('toJSON', {
