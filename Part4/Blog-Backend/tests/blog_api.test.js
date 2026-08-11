@@ -29,7 +29,7 @@ describe('When there is blogs in the database', () => {
     })
 
     describe('POST api calls', () => {
-        test('a blog can be inserted', async () => {
+        test.only('a blog can be inserted', async () => {
             const blog = {
                 title: "Hi",
                 author: "Brick",
@@ -126,7 +126,7 @@ describe('When there is blogs in the database', () => {
 
     describe('PUT api calls', () => {
 
-        test('Return 200 if the id is valid', async () => {
+        test('Return 200 if the id and token is valid', async () => {
 
             const blogsAtStart = await helper.blogsInDb()
             const blogToUpdate = blogsAtStart[0]

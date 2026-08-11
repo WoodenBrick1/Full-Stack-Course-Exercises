@@ -4,6 +4,7 @@ const blogsRouter = require('express').Router()
 const { request } = require('express')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const userExtractor = require('../utils/middleware').userExtractor
 
 
 blogsRouter.get('/', async (request, response) => {
