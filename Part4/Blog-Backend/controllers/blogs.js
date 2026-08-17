@@ -13,7 +13,7 @@ blogsRouter.get('/', async (request, response) => {
     response.json(blogs)
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', userExtractor, async (request, response) => {
     const body = request.body
 
     if (!body.likes) {
@@ -26,6 +26,7 @@ blogsRouter.post('/', async (request, response) => {
 
     const user = request.user
 
+    console.log(user)
     if (!user) {
         return response.status(400).json({ error: 'userId missing or not valid' })
     }
@@ -48,7 +49,7 @@ blogsRouter.post('/', async (request, response) => {
 
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
+blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 
     const user = request.user
 
@@ -64,7 +65,7 @@ blogsRouter.delete('/:id', async (request, response) => {
     response.status(204).end()
 })
 
-blogsRouter.put('/:id', async (request, response) => {
+blogsRouter.put('/:id', userExtractor, async (request, response) => {
     const id = request.params.id
     const { title, author, url, likes, userId } = request.body
     const blog = await Blog.findById(id)
