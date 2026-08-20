@@ -26,7 +26,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 
     const user = request.user
 
-    console.log(user)
+    // console.log(user)
     if (!user) {
         return response.status(400).json({ error: 'userId missing or not valid' })
     }
@@ -72,6 +72,13 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
 
     if (!blog) {
         return response.status(404).end()
+    }
+
+    const user = request.user
+
+    console.log(user.id.toString(), blog.user.toString())
+    if (!user || blog.user.toString() !== user.id.toString()) {
+        return response.status(400).json({ error: 'userId missing or not valid' })
     }
 
     blog.title = title
