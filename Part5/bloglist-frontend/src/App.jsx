@@ -50,7 +50,7 @@ const App = () => {
   }
 
 
-  const addBlog = (event) => {
+  const addBlog = async (event) => {
     event.preventDefault()
 
     blogFormRef.current.toggleVisibility()
@@ -63,14 +63,10 @@ const App = () => {
 
     console.log(blogObject)
 
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
+    const returnedBlog = await blogService.create(blogObject)
 
-        sendNotification(`New Blog: ${returnedBlog.title} By ${returnedBlog.author} added`)
-      })
-
+    setBlogs(blogs.concat(returnedBlog))
+    sendNotification(`New Blog: ${returnedBlog.title} By ${returnedBlog.author} added`)
   }
 
 
