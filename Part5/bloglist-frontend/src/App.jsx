@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import './index.css'
 
@@ -9,6 +9,7 @@ import Notification from './components/Notification'
 import Blogs from './components/Blogs'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
 
@@ -20,9 +21,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  // const [title, setTitle] = useState('')
-  // const [author, setAuthor] = useState('')
-  // const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -54,6 +52,9 @@ const App = () => {
 
   const addBlog = (event) => {
     event.preventDefault()
+
+    blogFormRef.current.toggleVisibility()
+
     const blogObject = {
       title: event.target.title.value,
       author: event.target.author.value,
@@ -95,6 +96,16 @@ const App = () => {
 
   }
 
+  const blogFormRef = useRef()
+
+  const blogForm = () => {
+    return (
+      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+        <BlogForm addBlog={addBlog} />
+      </Togglable>
+    )
+  }
+
   const handleLogout = () => {
     window.localStorage.removeItem('loginBlogUser')
     setUser(null)
@@ -108,7 +119,7 @@ const App = () => {
       {user &&
         <div>
           <button onClick={handleLogout}>Logout</button>
-          <BlogForm addBlog={addBlog} />
+          {blogForm()}
           <Blogs blogs={blogs} />
         </div>}
 
