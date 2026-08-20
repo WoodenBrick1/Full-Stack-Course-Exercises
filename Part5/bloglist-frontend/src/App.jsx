@@ -107,8 +107,9 @@ const App = () => {
       {!user && <LoginForm handleLogin={handleLogin} username={username} setUsername={setUsername} password={password} setPassword={setPassword} />}
       {user &&
         <div>
+          <button onClick={handleLogout}>Logout</button>
           <BlogForm addBlog={addBlog} />
-          <Blogs blogs={blogs} handleLogout={handleLogout} />
+          <Blogs blogs={blogs} />
         </div>}
 
     </div>
