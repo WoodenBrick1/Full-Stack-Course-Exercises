@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, userId, blogs, setBlogs }) => {
 
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
@@ -15,22 +15,38 @@ const Blog = ({ blog }) => {
     console.log("Increased likes for: ", blog)
 
     const newBlog = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
+      ...blog,
       likes: likes + 1,
     }
 
-    const returnedBLog = await blogService.put(newBlog, blog.id)
+    await blogService.put(newBlog)
 
-    setLikes(returnedBLog.likes)
+    setLikes(likes + 1)
+    const index = blogs.indexOf(blog)
+    blogs[index] = newBlog
+    setBlogs(blogs)
+
   }
 
+  const showRemove = blog.user.id === userId
+
+
+  const deleteBlog = async () => {
+
+    if (window.confirm(`Remove Blog: ${blog.title} by ${blog.author}`)) {
+      await blogService.deleteBlog(blog.id)
+
+      setBlogs(blogs.filter(arrblog => arrblog.id !== blog.id))
+    }
+  }
 
 
   return (
     <div className="blog">
-      {blog.title} {blog.author}
+      <span>
+        {blog.title} {blog.author}
+        <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
+      </span>
 
       {visible && (
         <>
@@ -43,8 +59,8 @@ const Blog = ({ blog }) => {
         </>)}
 
 
-      <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
-    </div>)
+      {showRemove && < button className="removeBtn" onClick={deleteBlog}>Remove</button>}
+    </div >)
 }
 
 export default Blog

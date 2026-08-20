@@ -107,6 +107,7 @@ const App = () => {
     setUser(null)
   }
 
+  console.log(user)
   return (
     <div>
       {message && <Notification message={message} isError={isError} />}
@@ -116,7 +117,7 @@ const App = () => {
         <div>
           <button onClick={handleLogout}>Logout</button>
           {blogForm()}
-          <Blogs blogs={blogs} />
+          <Blogs blogs={blogs} userId={user.id} setBlogs={setBlogs} />
         </div>}
 
     </div>
