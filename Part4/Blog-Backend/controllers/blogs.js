@@ -50,10 +50,10 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 })
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
-
+    const id = request.params.id
     const user = request.user
 
-    if (!user || !(user.blogs.includes(request.params.id))) {
+    if (!user || !(user.blogs.includes(id))) {
         return response.status(400).json({ error: 'Could Not Find User' })
     }
 
@@ -77,7 +77,7 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
     const user = request.user
 
     console.log(user.id.toString(), blog.user.toString())
-    if (!user || blog.user.toString() !== user.id.toString()) {
+    if (!user) {
         return response.status(400).json({ error: 'userId missing or not valid' })
     }
 

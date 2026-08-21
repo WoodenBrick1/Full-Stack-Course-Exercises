@@ -12,7 +12,7 @@ const Blog = ({ blog, userId, blogs, setBlogs }) => {
 
   const increaseLikes = async () => {
 
-    console.log("Increased likes for: ", blog)
+    console.log('Increased likes for: ', blog)
 
     const newBlog = {
       ...blog,
@@ -42,7 +42,7 @@ const Blog = ({ blog, userId, blogs, setBlogs }) => {
 
 
   return (
-    <div className="blog">
+    <div className='blog'>
       <span>
         {blog.title} {blog.author}
         <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
@@ -59,7 +59,7 @@ const Blog = ({ blog, userId, blogs, setBlogs }) => {
         </>)}
 
 
-      {showRemove && < button className="removeBtn" onClick={deleteBlog}>Remove</button>}
+      {showRemove && < button className='removeBtn' onClick={deleteBlog}>Remove</button>}
     </div >)
 }
 
