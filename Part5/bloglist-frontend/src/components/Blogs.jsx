@@ -1,6 +1,6 @@
 import Blog from './Blog'
 
-const Blogs = ({ blogs, userId, setBlogs }) => {
+const Blogs = ({ blogs, userId, increaseLikes, removeBlog }) => {
     console.log(blogs)
 
     // Sort based on likes
@@ -10,7 +10,7 @@ const Blogs = ({ blogs, userId, setBlogs }) => {
         <div>
             <h2>blogs</h2>
             {blogs.map(blog =>
-                <Blog key={blog.id} blog={blog} userId={userId} blogs={blogs} setBlogs={setBlogs} />
+                <Blog key={blog.id} blog={blog} userId={userId} increaseLikes={increaseLikes} removeBlog={removeBlog} />
             )}
 
         </div>

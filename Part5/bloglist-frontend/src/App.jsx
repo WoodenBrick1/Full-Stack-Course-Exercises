@@ -50,20 +50,11 @@ const App = () => {
   }
 
 
-  const addBlog = async (event) => {
-    event.preventDefault()
+  const addBlog = async (blog) => {
 
     blogFormRef.current.toggleVisibility()
 
-    const blogObject = {
-      title: event.target.title.value,
-      author: event.target.author.value,
-      url: event.target.url.value,
-    }
-
-    console.log(blogObject)
-
-    const returnedBlog = await blogService.create(blogObject)
+    const returnedBlog = await blogService.create(blog)
 
     setBlogs(blogs.concat(returnedBlog))
     sendNotification(`New Blog: ${returnedBlog.title} By ${returnedBlog.author} added`)
@@ -102,12 +93,33 @@ const App = () => {
     )
   }
 
+  console.log('Blogs: ', blogs)
+  const increaseLikes = async (blog) => {
+
+    const newBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+    }
+
+    await blogService.put(newBlog)
+  }
+
+  const removeBlog = async (blog) => {
+
+    if (window.confirm(`Remove Blog: ${blog.title} by ${blog.author}`)) {
+      await blogService.deleteBlog(blog.id)
+
+      setBlogs(blogs.filter(arrblog => arrblog.id !== blog.id))
+    }
+  }
+
+
   const handleLogout = () => {
     window.localStorage.removeItem('loginBlogUser')
     setUser(null)
   }
 
-  console.log(user)
+  // console.log(user)
   return (
     <div>
       {message && <Notification message={message} isError={isError} />}
@@ -117,7 +129,7 @@ const App = () => {
         <div>
           <button onClick={handleLogout}>Logout</button>
           {blogForm()}
-          <Blogs blogs={blogs} userId={user.id} setBlogs={setBlogs} />
+          <Blogs blogs={blogs} userId={user.id} setBlogs={setBlogs} increaseLikes={increaseLikes} removeBlog={removeBlog} />
         </div>}
 
     </div>
