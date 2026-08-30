@@ -107,6 +107,8 @@ const App = () => {
     }
 
     await blogService.put(newBlog)
+
+    setBlogs(blogs.map(blogArr => blogArr.id === blog.id ? newBlog : blogArr))
   }
 
   const removeBlog = async (blog) => {
