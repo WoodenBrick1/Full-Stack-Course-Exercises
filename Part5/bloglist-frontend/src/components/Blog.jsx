@@ -1,16 +1,15 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 
 const Blog = ({ blog, userId, increaseLikes, removeBlog }) => {
 
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
 
   const toggleVisibility = () => {
     setVisible(!visible)
   }
 
 
+  console.log('Blog userid: ' + blog.user.id + ' userId: ' + userId)
   const showRemove = blog.user.id === userId
 
 

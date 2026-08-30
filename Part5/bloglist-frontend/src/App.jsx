@@ -55,6 +55,11 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
 
     const returnedBlog = await blogService.create(blog)
+    returnedBlog.user = {
+      id: user.id,
+      username: user.username,
+    }
+
 
     setBlogs(blogs.concat(returnedBlog))
     sendNotification(`New Blog: ${returnedBlog.title} By ${returnedBlog.author} added`)
@@ -93,7 +98,7 @@ const App = () => {
     )
   }
 
-  console.log('Blogs: ', blogs)
+  // console.log('Blogs: ', blogs)
   const increaseLikes = async (blog) => {
 
     const newBlog = {
